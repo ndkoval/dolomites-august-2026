@@ -224,7 +224,7 @@ window.showAll = function () {
   applySelectionStyle();
   const b = L.latLngBounds([]);
   curDays.forEach(d => d.geometry.forEach(seg => seg.forEach(c => b.extend([c[1], c[0]]))));
-  if (b.isValid()) map.fitBounds(b.pad(0.06));
+  if (b.isValid()) map.flyToBounds(b.pad(0.06), { duration: 0.7, easeLinearity: 0.3 });
 };
 
 const POI_STYLE = { view: ["👁", "#5f3dc4"], swim: ["🏊", "#0c8599"], food: ["🍝", "#e8590c"], other: ["⭐", "#f08c00"] };
@@ -367,6 +367,12 @@ window.togglePicker = function () {
   const p = document.getElementById("day-picker-panel");
   p.hidden = !p.hidden;
 };
+document.addEventListener("click", e => {
+  const p = document.getElementById("day-picker-panel");
+  if (!p || p.hidden) return;
+  if (!p.contains(e.target) && e.target.id !== "day-picker-btn" && !e.target.closest("#day-picker-btn"))
+    p.hidden = true;
+}, true);
 function updatePickerBtn() {
   const b = document.getElementById("day-picker-btn");
   if (!b) return;
@@ -520,7 +526,7 @@ window.selectDay = function (id, opts = {}) {
   if (opts.fit !== false) {
     const b = L.latLngBounds([]);
     d.geometry.forEach(seg => seg.forEach(c => b.extend([c[1], c[0]])));
-    map.fitBounds(b.pad(0.1));
+    map.flyToBounds(b.pad(0.1), { duration: 0.7, easeLinearity: 0.3 });
   }
 };
 
@@ -530,7 +536,10 @@ window.openLightboxById = (id, pi) => openLightbox(DAY_CACHE[id], pi);
 function showLb() {
   const p = lbList[lbIdx]; if (!p) return;
   const lb = document.getElementById("lightbox");
-  document.getElementById("lb-img").src = p.file + "_l.jpg";
+  const im = document.getElementById("lb-img");
+  im.style.opacity = "0";
+  im.onload = () => { im.style.opacity = "1"; };
+  im.src = p.file + "_l.jpg";
   const src = p.source ? ` · <a href="${p.source}" target="_blank" rel="noopener">источник</a>` : "";
   document.getElementById("lb-caption").innerHTML =
     `<b>${esc(p.caption)}</b> — ${esc(p.credit)}${src}`;

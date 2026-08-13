@@ -308,3 +308,44 @@ body {
 /* фото-иконки: одинаковые квадраты со скруглением */
 .photo-icon { border-radius: 10px !important; width: 40px; height: 40px; object-fit: cover; }
 .photo-marker-wrap { border-radius: 10px; }
+
+
+/* ---------- гладкая навигация, как в приложении ---------- */
+* { -webkit-tap-highlight-color: transparent; }
+button, .chip, .btn, .day-head, .vtab, .all-btn, #day-picker-btn { touch-action: manipulation; user-select: none; }
+button:active, .chip:active, .btn:active, .all-btn:active, #day-picker-btn:active { transform: scale(.965); }
+button, .chip, .btn, .all-btn, #day-picker-btn { transition: transform .12s ease, background .15s, border-color .15s, filter .12s; }
+
+/* треки: плавное выделение/приглушение */
+path.leaflet-interactive { transition: stroke-opacity .3s ease, stroke-width .3s ease; }
+.photo-marker-wrap, .poi-pin, .daynum-icon { transition: transform .15s ease; }
+.leaflet-marker-icon:active { transform: scale(1.06); }
+
+/* раскрытие карточки дня */
+.day-body { animation: none; }
+.day.active .day-body { animation: cardIn .28s ease; }
+@keyframes cardIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* пикер: появление */
+#day-picker-panel { animation: pickerIn .22s ease; transform-origin: top center; }
+@keyframes pickerIn { from { opacity: 0; transform: translateX(-50%) translateY(-8px) scale(.97); }
+                      to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+
+/* лайтбокс: фейды */
+#lightbox { animation: lbIn .18s ease; }
+@keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
+#lb-img { transition: opacity .22s ease; }
+
+/* галерея: плавный скролл */
+.photos { scroll-behavior: smooth; }
+#sidebar { scroll-behavior: smooth; }
+
+/* инфополоса: мягкая смена */
+#map-info { transition: opacity .15s; }
+
+/* iOS safe-area */
+#topbar { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+@media (max-width: 900px) {
+  #map-info { padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+  #lb-close { top: max(18px, env(safe-area-inset-top)); }
+}

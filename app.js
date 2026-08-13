@@ -482,6 +482,7 @@ function dayBodyHTML(d, i) {
     <div class="kv">
       <span>старт <b>${esc(d.start)}</b></span><span>финиш <b>${esc(d.finish)}</b></span>
       <span>макс <b>${d.high} м</b></span><span>мин <b>${d.low} м</b></span>
+      ${d.ascentGps && d.ascentGps > d.ascent * 1.2 ? `<span>велокомп покажет <b>≈↑${d.ascentGps} м</b></span>` : ""}
     </div>
     ${d.sights ? `<div class="kv"><span>👀 ${esc(d.sights)}</span></div>` : ""}
     ${(d.bailouts && d.bailouts.length) ? `<div class="bail"><h4>Едем, пока едется — сойти можно тут</h4>

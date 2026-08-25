@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Доломиты на гравеле · финальный план · 10 дней</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<meta name="theme-color" content="#567f22">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="styles.css?v=1786584306">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚵</text></svg>">
+</head>
+<body>
+<header id="topbar">
+  <div id="brand">
+    <span class="logo">🚵</span>
+    <div>
+      <h1>Доломиты на гравеле</h1>
+      <div class="sub"><span class="sub-route">Innsbruck → Dolomiti → Garda → Merano → Bressanone · обратно региональными без брони · </span>старт:
+        <input type="date" id="start-date" min="2026-08-13" max="2026-09-30"></div>
+    </div>
+  </div>
+  <nav id="variant-tabs" aria-label="Варианты поездки"></nav>
+</header>
+
+<main id="layout">
+  <aside id="sidebar">
+    <section id="variant-info"></section>
+    <section id="days-list"></section>
+    <footer id="colophon">
+      Треки построены по OSM (BRouter, профиль trekking) · фоны карт: CyclOSM / OpenTopoMap / OSM / Esri ·
+      фото: komoot и Wikimedia Commons (атрибуция в просмотре) · подробности: spec/requirements.md
+    </footer>
+  </aside>
+  <div id="map-wrap">
+    <div id="map">
+      <button id="day-picker-btn" onclick="togglePicker()">📅 выбрать день ▾</button>
+      <div id="day-picker-panel" hidden></div>
+    </div>
+    <div id="map-info"></div>
+    <div id="map-legend">
+      <b>Покрытие в разбивке дня:</b>
+      <span><i style="background:#2f7de1"></i>велодорожка</span>
+      <span><i style="background:#a4713f"></i>гравий/лес</span>
+      <span><i style="background:#9aa0a6"></i>тихий асфальт</span>
+      <span><i style="background:#f0a63a"></i>провинциальная</span>
+      <span><i style="background:#e0483d"></i>с трафиком</span>
+      <span><i style="background:#28b7d0"></i>паром</span>
+    </div>
+  </div>
+</main>
+
+<div id="lightbox" hidden>
+  <button id="lb-close" title="Закрыть">×</button>
+  <button id="lb-prev" title="Предыдущая">‹</button>
+  <img id="lb-img" alt="">
+  <button id="lb-next" title="Следующая">›</button>
+  <div id="lb-count"></div>
+  <div id="lb-caption"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="app.js?v=1786584306"></script>
+</body>
+</html>

@@ -3,65 +3,71 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Доломиты на гравеле · финальный план · 10 дней</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<meta name="theme-color" content="#567f22">
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=1786584306">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚵</text></svg>">
+<meta name="robots" content="noindex, nofollow">
+<title>Доломиты</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  body { min-height: 100svh; display: flex; align-items: center; justify-content: center;
+    font: 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(165deg, #2c4a2e 0%, #1d3220 55%, #14231a 100%); color: #eef2ea; }
+  .card { width: min(92vw, 380px); text-align: center; padding: 34px 26px 30px;
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14);
+    border-radius: 20px; backdrop-filter: blur(8px); }
+  .logo { font-size: 44px; }
+  h1 { font-size: 20px; margin: 10px 0 4px; letter-spacing: .3px; }
+  p { color: #b9c7b4; font-size: 13.5px; margin-bottom: 20px; }
+  input { width: 100%; padding: 13px 14px; font: inherit; border-radius: 12px; border: 1.5px solid rgba(255,255,255,.25);
+    background: rgba(0,0,0,.25); color: #fff; text-align: center; outline: none; }
+  input:focus { border-color: #9ec27a; }
+  button { width: 100%; margin-top: 12px; padding: 13px; font: 600 15px -apple-system, sans-serif;
+    border: none; border-radius: 12px; background: #6aa127; color: #fff; cursor: pointer; transition: transform .12s, filter .15s; }
+  button:active { transform: scale(.97); }
+  .err { color: #ff9d8f; font-size: 13px; height: 18px; margin-top: 10px; }
+  .shake { animation: sh .4s; }
+  @keyframes sh { 20%,60% { transform: translateX(-7px); } 40%,80% { transform: translateX(7px); } }
+</style>
 </head>
 <body>
-<header id="topbar">
-  <div id="brand">
-    <span class="logo">🚵</span>
-    <div>
-      <h1>Доломиты на гравеле</h1>
-      <div class="sub"><span class="sub-route">Innsbruck → Dolomiti → Garda → Merano → Bressanone · обратно региональными без брони · </span>старт:
-        <input type="date" id="start-date" min="2026-08-13" max="2026-09-30"></div>
-    </div>
-  </div>
-  <nav id="variant-tabs" aria-label="Варианты поездки"></nav>
-</header>
-
-<main id="layout">
-  <aside id="sidebar">
-    <section id="variant-info"></section>
-    <section id="days-list"></section>
-    <footer id="colophon">
-      Треки построены по OSM (BRouter, профиль trekking) · фоны карт: CyclOSM / OpenTopoMap / OSM / Esri ·
-      фото: komoot и Wikimedia Commons (атрибуция в просмотре) · подробности: spec/requirements.md
-    </footer>
-  </aside>
-  <div id="map-wrap">
-    <div id="map">
-      <button id="day-picker-btn" onclick="togglePicker()">📅 выбрать день ▾</button>
-      <div id="day-picker-panel" hidden></div>
-    </div>
-    <div id="map-info"></div>
-    <div id="map-legend">
-      <b>Покрытие в разбивке дня:</b>
-      <span><i style="background:#2f7de1"></i>велодорожка</span>
-      <span><i style="background:#a4713f"></i>гравий/лес</span>
-      <span><i style="background:#9aa0a6"></i>тихий асфальт</span>
-      <span><i style="background:#f0a63a"></i>провинциальная</span>
-      <span><i style="background:#e0483d"></i>с трафиком</span>
-      <span><i style="background:#28b7d0"></i>паром</span>
-    </div>
-  </div>
-</main>
-
-<div id="lightbox" hidden>
-  <button id="lb-close" title="Закрыть">×</button>
-  <button id="lb-prev" title="Предыдущая">‹</button>
-  <img id="lb-img" alt="">
-  <button id="lb-next" title="Следующая">›</button>
-  <div id="lb-count"></div>
-  <div id="lb-caption"></div>
-</div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="app.js?v=1786584306"></script>
+<form class="card" id="f">
+  <div class="logo">🚵</div>
+  <h1>Доломиты на гравеле</h1>
+  <p>Приватный маршрут-гид · 14–23 августа 2026</p>
+  <input id="pw" type="password" placeholder="Пароль" autocomplete="current-password" autofocus>
+  <button>Открыть</button>
+  <div class="err" id="err"></div>
+</form>
+<script>
+const SALT = "06e44bda88508671cf39d3e2d6d325ae", IV = "18a209ea8eeec6f90a6b634d", CT = "03426c0c9a23cd22436f3b8e66da453f90e79c8668b709754592cd1fe28be442";
+const un = h => new Uint8Array(h.match(/../g).map(x => parseInt(x, 16)));
+async function unlock(pw) {
+  const km = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: un(SALT), iterations: 310000, hash: "SHA-256" },
+    km, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+  const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: un(IV) }, key, un(CT));
+  return new TextDecoder().decode(pt);
+}
+async function go(t) { location.replace("./" + t + "/"); }
+// старый service worker корневой области — снести, чтобы не отдавал кэш
+if (navigator.serviceWorker) navigator.serviceWorker.getRegistrations().then(rs =>
+  rs.forEach(r => { if (!/\/[0-9a-f]{16}\/$/.test(new URL(r.scope).pathname)) r.unregister(); }));
+const saved = localStorage.getItem("dolomiti_t");
+if (saved) fetch("./" + saved + "/manifest.json", { method: "HEAD" })
+  .then(r => { if (r.ok) go(saved); else localStorage.removeItem("dolomiti_t"); }).catch(() => {});
+document.getElementById("f").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = document.querySelector("button"); btn.textContent = "…";
+  try {
+    const t = await unlock(document.getElementById("pw").value.trim());
+    localStorage.setItem("dolomiti_t", t);
+    go(t);
+  } catch (err) {
+    btn.textContent = "Открыть";
+    document.getElementById("err").textContent = "Неверный пароль";
+    document.querySelector(".card").classList.add("shake");
+    setTimeout(() => document.querySelector(".card").classList.remove("shake"), 450);
+  }
+});
+</script>
 </body>
 </html>
